@@ -15,27 +15,30 @@ web3.eth.accounts
 //'0x208e02303fe29be3698732e92ca32b88d80a2d36']
 
 // 2. compile
-var code = fs.readFileSync('Voting.sol').toString();
+var code = fs.readFileSync('Voting2.sol').toString();
 var solc = require('solc');
 var compiledCode = solc.compile(code);
 
 // 3. deploy
-var abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface);
+var abiDefinition = JSON.parse(compiledCode.contracts[':Voting2'].interface);
 var VotingContract = web3.eth.contract(abiDefinition);
-var byteCode = compiledCode.contracts[':Voting'].bytecode;
-var deployedContract = VotingContract.new(['Rama','Nick','Jose'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000});
+var byteCode = compiledCode.contracts[':Voting2'].bytecode;
+var deployedContract = VotingContract.new(['Tom','Dick','Harry'],{data: byteCode, from: web3.eth.accounts[1], gas: 4700000});
 console.log('deployedContract.address: %s', deployedContract.address);
-//'0x0396d2b97871144f75ba9a9c8ae12bf6c019f610' <- Your address will be different
+
+/*
 var contractInstance = VotingContract.at(deployedContract.address);
+//console.log('contractInstance: %s', contractInstance);
 
 // 3. test
-contractInstance.totalVotesFor.call('Rama');
+var before = contractInstance.totalVotesFor.call('Tom');
+
 //{ [String: '0'] s: 1, e: 0, c: [ 0 ] }
-contractInstance.voteForCandidate('Rama', {from: web3.eth.accounts[0]});
-//'0xdedc7ae544c3dde74ab5a0b07422c5a51b5240603d31074f5b75c0ebc786bf53'
-contractInstance.voteForCandidate('Rama', {from: web3.eth.accounts[0]});
-//'0x02c054d238038d68b65d55770fabfca592a5cf6590229ab91bbe7cd72da46de9'
-contractInstance.voteForCandidate('Rama', {from: web3.eth.accounts[0]});
-//'0x3da069a09577514f2baaa11bc3015a16edf26aad28dffbcd126bde2e71f2b76f'
-contractInstance.totalVotesFor.call('Rama').toLocaleString();
-//'3'
+var totalVotes = console.log('contractInstance: %s', contractInstance);
+
+contractInstance.voteForCandidate('Tom', {from: web3.eth.accounts[1]});
+contractInstance.voteForCandidate('Tom', {from: web3.eth.accounts[1]});
+contractInstance.voteForCandidate('Tom', {from: web3.eth.accounts[1]});
+contractInstance.totalVotesFor.call('Tom').toLocaleString();
+console.log('totalVotes: %d', totalVotes);
+*/
